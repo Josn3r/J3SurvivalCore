@@ -1,0 +1,5 @@
+name: J3SurvivalCore
+version: 1.0.0.0
+main: store.j3studios.plugin.SCore
+author: J3Studios
+api-version: 1.19
