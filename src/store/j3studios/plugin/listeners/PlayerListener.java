@@ -20,7 +20,7 @@ public class PlayerListener implements Listener {
     }
     
     public void onPlayerMoveEvent (PlayerMoveEvent e) {
-        Player p = e.getPlayer();
+        Player p = e.getPlayer();        
     }
     
 }

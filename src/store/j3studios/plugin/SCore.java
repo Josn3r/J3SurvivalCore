@@ -23,11 +23,13 @@ public class SCore extends JavaPlugin {
         ins = this;
         
         this.registerEvent(new PlayerListener());
+        
+        this.socketStart(7777);
     }
     
     @Override
     public void onDisable() {
-        
+        server.closeServerSocket();
     }
     
     /*

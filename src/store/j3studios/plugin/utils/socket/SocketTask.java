@@ -10,7 +10,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import store.j3studios.plugin.SCore;
+import store.j3studios.plugin.utils.Tools;
 
 public class SocketTask implements Runnable {
     
@@ -48,13 +51,31 @@ public class SocketTask implements Runnable {
                         continue;
                 }
                 
+                Servers.get().registerServerSocket(socket.getInetAddress().toString(), this);
+                
                 if (!json.has("type")) continue;
-
                 switch (json.get("type").getAsString()) {
                     case "UPDATE" -> {
-                        if (!json.has("server_name")) break;
-                        if (!json.has("max_players")) break;
-                        if (!json.has("current_players")) break;
+                        if (!json.has("player_name")) break;
+                        JsonObject jsonres = new JsonObject();
+                        
+                        String nick = json.get("player_name").getAsString();
+                        Player player = Bukkit.getPlayer(nick);
+                        if (player == null) {
+                            jsonres.addProperty("type", "UPDATE");
+                            jsonres.addProperty("player_name", nick);
+                            jsonres.addProperty("location", "CARGANDO...");
+                            jsonres.addProperty("online", "OFFLINE");
+                        } else {
+                            String location = Tools.get().formatLocation(player.getLocation());
+                            jsonres.addProperty("type", "UPDATE");
+                            jsonres.addProperty("player_name", player.getName());
+                            jsonres.addProperty("location", location);
+                            jsonres.addProperty("online", "ONLINE");
+                        }
+                        for (SocketTask st : Servers.get().getSocketByServer().values()) {
+                            st.getOut().println(jsonres.toString());
+                        }
                     }
                 }
             } else {
@@ -66,10 +87,10 @@ public class SocketTask implements Runnable {
                 Thread.currentThread().interrupt();
                 break;
             }
-            try {
+            /*try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-            }
+            }*/
         }
     };
 
