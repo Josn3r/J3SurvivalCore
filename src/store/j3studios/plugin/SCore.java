@@ -8,4 +8,8 @@ public class SCore extends JavaPlugin {
         
     }
     
+    public void onDisable() {
+        
+    }
+    
 }
