@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import store.j3studios.plugin.player.PlayerManager;
 
 public class PlayerListener implements Listener {
@@ -15,8 +16,11 @@ public class PlayerListener implements Listener {
         
         if (!PlayerManager.get().doesPlayerExists(p.getUniqueId())) {
             PlayerManager.get().createPlayer(p);
-        }
-        
+        }        
+    }
+    
+    public void onPlayerMoveEvent (PlayerMoveEvent e) {
+        Player p = e.getPlayer();
     }
     
 }
