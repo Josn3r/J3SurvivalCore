@@ -1,5 +1,6 @@
 package store.j3studios.plugin.player;
 
+import java.util.ArrayList;
 import java.util.UUID;
 import org.bukkit.entity.Player;
 
@@ -9,6 +10,18 @@ public class SPlayer {
     private Player player;
      
     private String job1 = null;
+    
+    // MARRY
+    private String marryUUID = null;
+    private String marryName = null;
+    private String marryDate = null;
+	
+    // PROTECTION
+    private ArrayList<String> protectionOwner = new ArrayList<String>();
+    private ArrayList<String> protectionMember = new ArrayList<String>();
+
+    // SPAZIOCOINS
+    private int spaziocoins = 0;
     
     public SPlayer (UUID uuid, Player player) {
         this.uuid = uuid;
@@ -23,8 +36,13 @@ public class SPlayer {
         return player;
     }
 
-    public String getJob1() {
-        return job1;
+    public ArrayList<String> getProtectionOwner() {
+        return protectionOwner;
     }
-        
+
+    public ArrayList<String> getProtectionMember() {
+        return protectionMember;
+    }
+
+    
 }

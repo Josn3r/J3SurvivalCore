@@ -293,6 +293,19 @@ public class Tools {
         int randomNum = rand.nextInt(max - min + 1) + min;
         return randomNum;
     }
+    
+    public String getAlphaNumericString(int n) {
+    	String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    	String AlphaNumericString = "0123456789";
+    	StringBuilder sb = new StringBuilder(n);
+    	for (int i = 0; i < n; i++) {
+    		int j = (int)(AlphaNumericString.length() * Math.random());
+    		sb.append(AlphaNumericString.charAt(j));
+        } 
+        int index = (int)(letters.length() * Math.random());
+        char letter = letters.charAt(index);
+        return letter + sb.toString();
+    }
       
     // PROGRESS BAR
 	
