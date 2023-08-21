@@ -16,7 +16,8 @@ public class PlayerListener implements Listener {
         
         if (!PlayerManager.get().doesPlayerExists(p.getUniqueId())) {
             PlayerManager.get().createPlayer(p);
-        }        
+        }      
+        
     }
     
     public void onPlayerMoveEvent (PlayerMoveEvent e) {
