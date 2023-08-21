@@ -6,9 +6,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import store.j3studios.plugin.commands.testcmds;
 import store.j3studios.plugin.listeners.PlayerListener;
+import store.j3studios.plugin.player.PlayerManager;
+import store.j3studios.plugin.protections.ProtectionListener;
 import store.j3studios.plugin.utils.Tools;
 import store.j3studios.plugin.utils.socket.SocketServer;
 
@@ -23,8 +27,16 @@ public class SCore extends JavaPlugin {
         ins = this;
         
         this.registerEvent(new PlayerListener());
+        this.registerEvent(new ProtectionListener());
+        this.registerCommand("testprote", new testcmds());
         
         this.socketStart(7777);
+        
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (!PlayerManager.get().doesPlayerExists(p.getUniqueId())) {
+                PlayerManager.get().createPlayer(p);
+            }
+        }
     }
     
     @Override

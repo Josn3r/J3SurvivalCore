@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import store.j3studios.plugin.SCore;
 import store.j3studios.plugin.player.PlayerManager;
 import store.j3studios.plugin.player.SPlayer;
 import store.j3studios.plugin.utils.Tools;
@@ -31,8 +32,7 @@ public class ProtectionManager {
         
         Protections prote = new Protections(proteUUID, p, members, selection);
         protections.put(proteUUID, prote);
-        
-        sp.getProtectionOwner().add(prote.getUuid());
+        sp.getProtectionOwner().add(prote.getUuid());        
     }
     
     public void removeProtection(String proteUUID) {

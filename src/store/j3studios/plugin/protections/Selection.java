@@ -18,6 +18,10 @@ public class Selection {
         this.radius = radius;
         this.centerPoint = centerPoint;
         
+        this.getCornerOne(centerPoint, radius);
+        this.getCornerTwo(centerPoint, radius);
+        this.getCornerThree(centerPoint, radius);
+        this.getCornerFour(centerPoint, radius);        
     }
 
     private void getCornerOne (Block centerPoint, int radius) {
@@ -29,11 +33,11 @@ public class Selection {
     }
     
     private void getCornerThree (Block centerPoint, int radius) {
-        this.corner_one = centerPoint.getWorld().getBlockAt(centerPoint.getX() + radius, centerPoint.getY(), centerPoint.getZ() - radius);
+        this.corner_three = centerPoint.getWorld().getBlockAt(centerPoint.getX() + radius, centerPoint.getY(), centerPoint.getZ() - radius);
     }
     
     private void getCornerFour (Block centerPoint, int radius) {
-        this.corner_two = centerPoint.getWorld().getBlockAt(centerPoint.getX() + radius, centerPoint.getY(), centerPoint.getZ() + radius);
+        this.corner_four = centerPoint.getWorld().getBlockAt(centerPoint.getX() + radius, centerPoint.getY(), centerPoint.getZ() + radius);
     }
     
     public Block getCenterPoint() {

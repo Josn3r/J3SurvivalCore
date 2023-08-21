@@ -25,10 +25,10 @@ public class Protections {
         this.owner = owner;
         this.ownerUUID = owner.getUniqueId();
         this.members = members;
-        
-        this.selection = selection;
+                
         this.loc = selection.getCenterPoint().getLocation();
         this.size = selection.getRadius();
+        this.selection = selection;
     }
     
     public Protections(String protectionUUID, String ownerUUID, ArrayList<String> members, Selection selection) {
@@ -37,10 +37,10 @@ public class Protections {
         this.owner = Bukkit.getOfflinePlayer(UUID.fromString(ownerUUID));
         this.ownerUUID = UUID.fromString(ownerUUID);
         this.members = members;
-        
-        this.selection = selection;
+                        
         this.loc = selection.getCenterPoint().getLocation();
         this.size = selection.getRadius();
+        this.selection = selection;
     }
     
     public boolean overlaps(Selection comparator) {
