@@ -17,6 +17,7 @@ import store.j3studios.plugin.utils.Tools;
 import store.j3studios.plugin.utils.socket.SocketServer;
 
 public class SCore extends JavaPlugin {
+     
     
     private static SCore ins;
     
