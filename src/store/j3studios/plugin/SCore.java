@@ -13,6 +13,7 @@ import store.j3studios.plugin.commands.testcmds;
 import store.j3studios.plugin.listeners.PlayerListener;
 import store.j3studios.plugin.player.PlayerManager;
 import store.j3studios.plugin.protections.ProtectionListener;
+import store.j3studios.plugin.utils.Config;
 import store.j3studios.plugin.utils.Tools;
 import store.j3studios.plugin.utils.socket.SocketServer;
 
@@ -21,11 +22,18 @@ public class SCore extends JavaPlugin {
     
     private static SCore ins;
     
+    public static Config lang;
     private SocketServer server;
     
     @Override
     public void onEnable() {
         ins = this;
+        
+        // LOAD CONFIGURATION
+        this.getConfig();
+        this.saveDefaultConfig();
+        
+        lang = new Config(this, "lang");
         
         this.registerEvent(new PlayerListener());
         this.registerEvent(new ProtectionListener());
@@ -42,7 +50,9 @@ public class SCore extends JavaPlugin {
     
     @Override
     public void onDisable() {
-        server.closeServerSocket();
+        if (server != null) {
+            server.closeServerSocket();
+        }
     }
     
     /*

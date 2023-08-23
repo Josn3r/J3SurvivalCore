@@ -1,0 +1,25 @@
+#
+# J3Studios Survival Core
+# Development by J3Studios
+#
+
+database:
+  enable: true
+  hostname: 'localhost'
+  port: 3306
+  username: 'root'
+  password: '123456789'
+  database: 'survivalrp'
+
+proxy:
+  enable: false
+  port: 7777
+
+config:
+  protections:
+    # - 'permission : amount'
+    max-protections-per-permission:
+    - 'j3sc.max-protection.default : 2'
+    - 'j3sc.max-protection.vip : 3'
+    - 'j3sc.max-protection.elite : 4'
+    

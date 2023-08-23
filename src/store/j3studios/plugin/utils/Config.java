@@ -37,6 +37,10 @@ public class Config {
         }
     }
 
+    public Config() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     public void sDefault(String path, String value) {
         if (!this.config.contains(path)) {
             this.config.set(path, (Object)value);
