@@ -1,0 +1,14 @@
+#
+# J3Studios Survival Core
+# Development by J3Studios
+#
+
+scoreboard:
+  title: '&6&lSURVIVAL RP'
+  lines:
+  - '&fOnline Players: &e<ONLINE>'
+  - ' '
+  - ' '
+  - ' '
+  maxCharsCenterPX: 25
+  Alignment: CENTER

@@ -7,6 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import store.j3studios.plugin.menu.protections.ProtectionShop;
 import store.j3studios.plugin.utils.ItemBuilder;
 import store.j3studios.plugin.utils.Tools;
 
@@ -22,7 +23,7 @@ public class testcmds implements CommandExecutor {
         Player p = (Player)sender;
         
         if (cmd.getName().equalsIgnoreCase("testprote")) {
-            Integer size = 10;
+            /*Integer size = 10;
             Double cost = (1450.00 * size);
             Double tax = (cost/10);
                     
@@ -32,7 +33,8 @@ public class testcmds implements CommandExecutor {
                             "&fTamaño de Protección: &e" + size + "x" + size,
                             "&fCosto de Impuestos: &6&l$&e" + Tools.get().formatMoney(tax),
                             " ");
-            p.getInventory().addItem(item);
+            p.getInventory().addItem(item);*/
+            new ProtectionShop(p).open(p);
             Tools.get().playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);                    
             return true;
         }        

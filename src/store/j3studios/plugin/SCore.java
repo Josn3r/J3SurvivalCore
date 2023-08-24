@@ -10,9 +10,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import store.j3studios.plugin.commands.testcmds;
+import store.j3studios.plugin.database.PlayerSQL;
+import store.j3studios.plugin.database.ProtectionsSQL;
+import store.j3studios.plugin.database.SQL;
 import store.j3studios.plugin.listeners.PlayerListener;
+import store.j3studios.plugin.managers.ScoreboardManager;
 import store.j3studios.plugin.player.PlayerManager;
 import store.j3studios.plugin.protections.ProtectionListener;
+import store.j3studios.plugin.protections.ProtectionManager;
+import store.j3studios.plugin.tasks.ProtectionsTask;
 import store.j3studios.plugin.utils.Config;
 import store.j3studios.plugin.utils.Tools;
 import store.j3studios.plugin.utils.socket.SocketServer;
@@ -22,7 +28,7 @@ public class SCore extends JavaPlugin {
     
     private static SCore ins;
     
-    public static Config lang;
+    public static Config lang,board;
     private SocketServer server;
     
     @Override
@@ -34,17 +40,27 @@ public class SCore extends JavaPlugin {
         this.saveDefaultConfig();
         
         lang = new Config(this, "lang");
+        board = new Config(this, "scoreboard");
         
         this.registerEvent(new PlayerListener());
         this.registerEvent(new ProtectionListener());
         this.registerCommand("testprote", new testcmds());
         
-        this.socketStart(7777);
+        SQL.get().openConnection();
+        //this.socketStart(7777);
+        
+        // LOAD MANAGEr
+        ProtectionManager.get().loadProtections();
+        new ProtectionsTask(this).loadHours();
         
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!PlayerManager.get().doesPlayerExists(p.getUniqueId())) {
                 PlayerManager.get().createPlayer(p);
             }
+            PlayerSQL.get().createPlayer(p);
+            PlayerSQL.get().loadProtectionOwnerUser(p.getUniqueId().toString(), PlayerSQL.get().getUserID(p.getUniqueId().toString()));
+            PlayerSQL.get().loadProtectionMemberUser(p.getUniqueId().toString(), PlayerSQL.get().getUserID(p.getUniqueId().toString()));
+            ScoreboardManager.get().createScoreboard(p);
         }
     }
     
