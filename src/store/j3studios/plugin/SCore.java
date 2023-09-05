@@ -30,7 +30,7 @@ public class SCore extends JavaPlugin {
     
     public static Config lang,board;
     private SocketServer server;
-    
+     
     @Override
     public void onEnable() {
         ins = this;

@@ -217,7 +217,7 @@ public class MagicManager {
         stand.setInvulnerable(true);
         stand.setInvisible(true);
         stand.setGravity(false);
-        
+         
         taskSlash1 = SCore.get().getServer().getScheduler().scheduleSyncRepeatingTask(SCore.get(), new Runnable() {
             Integer i = 1;
             @Override
