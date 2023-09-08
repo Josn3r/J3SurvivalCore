@@ -1,5 +1,5 @@
 name: J3SurvivalCore
-version: 1.20.08.23
+version: 1.06.09.23
 main: store.j3studios.plugin.SCore
 author: J3Studios
 depends: [ItemsAdder,ProtocolLib,LoneLibs]
