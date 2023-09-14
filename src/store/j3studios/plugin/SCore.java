@@ -9,6 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import store.j3studios.plugin.commands.essentials.GamemodeCMD;
 import store.j3studios.plugin.commands.testcmds;
 import store.j3studios.plugin.database.PlayerSQL;
 import store.j3studios.plugin.database.ProtectionsSQL;
@@ -43,7 +44,11 @@ public class SCore extends JavaPlugin {
         
         this.registerEvent(new PlayerListener());
         this.registerEvent(new ProtectionListener());
+        
         this.registerCommand("testprote", new testcmds());
+        
+        // ESSENTIALS COMMANDS
+        this.registerCommand("gamemode", new GamemodeCMD());
         
         SQL.get().openConnection();
         //this.socketStart(7777);
@@ -61,6 +66,8 @@ public class SCore extends JavaPlugin {
             PlayerSQL.get().loadProtectionMemberUser(p.getUniqueId().toString(), PlayerSQL.get().getUserID(p.getUniqueId().toString()));
             ScoreboardManager.get().createScoreboard(p);
         }
+        
+        this.sendEnableMessage();
     }
     
     @Override
@@ -109,4 +116,15 @@ public class SCore extends JavaPlugin {
     public void registerCommand(String cmd, CommandExecutor executor) {
         this.getCommand(cmd).setExecutor(executor);
     }
+    
+    public void sendEnableMessage() {
+        debug(" ");
+        debug("&aJ3SurvivalCore enabled!");
+        debug(" ");
+        debug("&fDevelopment by: &eJ3Studios");
+        debug("&fProject Version: &ev" + this.getDescription().getVersion());
+        debug("&fAuthor: &eJosn3r");
+        debug(" ");
+    }
+    
 }
