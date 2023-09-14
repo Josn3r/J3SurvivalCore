@@ -62,7 +62,7 @@ public class SCore extends JavaPlugin {
         SQL.get().openConnection();
         //this.socketStart(7777);
          
-        // LOAD MANAGEr
+        // LOAD MANAGER
         ProtectionManager.get().loadProtections();
         new ProtectionsTask(this).loadHours();
         
