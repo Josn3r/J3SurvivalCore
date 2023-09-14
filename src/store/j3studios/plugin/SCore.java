@@ -9,7 +9,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import store.j3studios.plugin.commands.essentials.FeedCMD;
 import store.j3studios.plugin.commands.essentials.GamemodeCMD;
+import store.j3studios.plugin.commands.essentials.HealCMD;
+import store.j3studios.plugin.commands.essentials.MessageCMD;
+import store.j3studios.plugin.commands.essentials.OnlineCMD;
 import store.j3studios.plugin.commands.testcmds;
 import store.j3studios.plugin.database.PlayerSQL;
 import store.j3studios.plugin.database.ProtectionsSQL;
@@ -49,6 +53,11 @@ public class SCore extends JavaPlugin {
         
         // ESSENTIALS COMMANDS
         this.registerCommand("gamemode", new GamemodeCMD());
+        this.registerCommand("message", new MessageCMD());
+        this.registerEvent(new MessageCMD());
+        this.registerCommand("list", new OnlineCMD());
+        this.registerCommand("heal", new HealCMD());
+        this.registerCommand("feed", new FeedCMD());
         
         SQL.get().openConnection();
         //this.socketStart(7777);

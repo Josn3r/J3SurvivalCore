@@ -10,3 +10,15 @@ commands:
     testprote:
     gamemode:
         aliases: [gm]
+    message:
+        aliases: [msg,sendmsg,sendmessage,priv,dm]
+    list:
+        aliases: [conectados,online]
+    feed:
+        aliases: [comida,food]
+    heal:
+        aliases: [vida,regenvida,regenhealth]
+    
+    
+    
+    
