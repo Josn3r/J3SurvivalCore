@@ -27,8 +27,6 @@ public class PlayerListener implements Listener {
             PlayerManager.get().createPlayer(p);
         }
         PlayerSQL.get().createPlayer(p);   
-        PlayerSQL.get().loadProtectionOwnerUser(p.getUniqueId().toString(), PlayerSQL.get().getUserID(p.getUniqueId().toString()));
-        PlayerSQL.get().loadProtectionMemberUser(p.getUniqueId().toString(), PlayerSQL.get().getUserID(p.getUniqueId().toString()));
         ScoreboardManager.get().createScoreboard(p);
     }
     
@@ -68,7 +66,7 @@ public class PlayerListener implements Listener {
             
             if (item.getType() == Material.IRON_SWORD) {
                 event.setCancelled(true);
-                
+                MagicManager.get().test(player);
             }
             
             if (item.getType() == Material.DIAMOND_SWORD) {

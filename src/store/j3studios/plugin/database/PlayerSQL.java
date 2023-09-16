@@ -3,12 +3,8 @@ package store.j3studios.plugin.database;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.UUID;
 import org.bukkit.entity.Player;
 import store.j3studios.plugin.SCore;
-import store.j3studios.plugin.player.PlayerManager;
-import store.j3studios.plugin.player.SPlayer;
 
 public class PlayerSQL {
     
@@ -82,52 +78,6 @@ public class PlayerSQL {
             SCore.debug(e.getMessage());
         }
         return id;
-    }
-    
-    public void loadProtectionOwnerUser(String userUUID, Integer userID) {
-        SPlayer sp = PlayerManager.get().getPlayer(UUID.fromString(userUUID));
-        try {
-            PreparedStatement st = SQL.get().getConnection().prepareStatement("SELECT `proteID` FROM `protections_ownerUser_data` WHERE `userID` = '" + userID + "';");
-            st.executeQuery();
-            ResultSet rs = st.getResultSet();
-            while (rs.next()) {
-                PreparedStatement st1 = SQL.get().getConnection().prepareStatement("SELECT `proteID` FROM `protections_data` WHERE `id` = '" + rs.getInt("proteID") + "';");
-                st1.executeQuery();
-                ResultSet rs1 = st1.getResultSet();
-                while (rs1.next()) {
-                    sp.getProtectionOwner().add(rs1.getString("proteID"));
-                }
-                rs1.close();
-                st1.close();
-            }
-            rs.close();
-            st.close();
-        } catch (SQLException e) {
-            SCore.debug(e.getMessage());
-        }
-    }
-    
-    public void loadProtectionMemberUser(String userUUID, Integer userID) {
-        SPlayer sp = PlayerManager.get().getPlayer(UUID.fromString(userUUID));
-        try {
-            PreparedStatement st = SQL.get().getConnection().prepareStatement("SELECT `proteID` FROM `protections_memberUser_data` WHERE `userID` = '" + userID + "';");
-            st.executeQuery();
-            ResultSet rs = st.getResultSet();
-            while (rs.next()) {
-                PreparedStatement st1 = SQL.get().getConnection().prepareStatement("SELECT `proteID` FROM `protections_data` WHERE `id` = '" + rs.getInt("proteID") + "';");
-                st1.executeQuery();
-                ResultSet rs1 = st1.getResultSet();
-                while (rs1.next()) {
-                    sp.getProtectionMember().add(rs1.getString("proteID"));
-                }
-                rs1.close();
-                st1.close();
-            }
-            rs.close();
-            st.close();
-        } catch (SQLException e) {
-            SCore.debug(e.getMessage());
-        }
     }
     
 }

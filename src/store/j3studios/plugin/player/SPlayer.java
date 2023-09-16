@@ -23,12 +23,12 @@ public class SPlayer {
     private String marryName = null;
     private String marryDate = null;
 	
-    // PROTECTION
-    private ArrayList<String> protectionOwner = new ArrayList<String>();
-    private ArrayList<String> protectionMember = new ArrayList<String>();
-
-    // SPAZIOCOINS
-    private int spaziocoins = 0;
+    // ECONOMY
+    private Integer silvers = 0;
+    private Integer golds = 0;
+    
+    // MANA
+    private Double mana = 20.0;
     
     public SPlayer (UUID uuid, Player player) {
         this.uuid = uuid;
@@ -43,14 +43,75 @@ public class SPlayer {
         return player;
     }
 
-    public ArrayList<String> getProtectionOwner() {
-        return protectionOwner;
+    /*
+    
+    
+    */
+
+    public Double getMana() {
+        return mana;
     }
 
-    public ArrayList<String> getProtectionMember() {
-        return protectionMember;
+    public void setMana(Double mana) {
+        this.mana = mana;
+    }
+    
+    
+    
+    /*
+    
+    
+    */
+    
+    
+    public String getJob1() {
+        return job1;
     }
 
+    public void setJob1(String job1) {
+        this.job1 = job1;
+    }
+
+    public String getMarryUUID() {
+        return marryUUID;
+    }
+
+    public void setMarryUUID(String marryUUID) {
+        this.marryUUID = marryUUID;
+    }
+
+    public String getMarryName() {
+        return marryName;
+    }
+
+    public void setMarryName(String marryName) {
+        this.marryName = marryName;
+    }
+
+    public String getMarryDate() {
+        return marryDate;
+    }
+
+    public void setMarryDate(String marryDate) {
+        this.marryDate = marryDate;
+    }
+
+    public Integer getSilvers() {
+        return silvers;
+    }
+
+    public void setSilvers(Integer silvers) {
+        this.silvers = silvers;
+    }
+
+    public Integer getGolds() {
+        return golds;
+    }
+
+    public void setGolds(Integer golds) {
+        this.golds = golds;
+    }
+    
     /*
     
     */

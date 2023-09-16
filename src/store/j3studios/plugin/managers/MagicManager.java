@@ -1,9 +1,12 @@
 package store.j3studios.plugin.managers;
 
+import dev.lone.itemsadder.api.CustomEntity;
 import dev.lone.itemsadder.api.CustomStack;
 import java.util.ArrayList;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -19,6 +22,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import store.j3studios.plugin.SCore;
+import store.j3studios.plugin.player.PlayerManager;
+import store.j3studios.plugin.player.SPlayer;
 import store.j3studios.plugin.utils.Tools;
 
 public class MagicManager {
@@ -48,9 +53,9 @@ public class MagicManager {
             }
         }
                                 
-        for (double i = 0; i <= Math.PI; i += Math.PI / 5) {
+        for (double i = 0; i <= Math.PI; i += Math.PI / 15) {
             double y = HEAL_RADIUS * Math.cos(i) + 1.5;
-            for (double a = 0; a < Math.PI * 2; a+= Math.PI / 10) {
+            for (double a = 0; a < Math.PI * 2; a+= Math.PI / 15) {
                 double x = HEAL_RADIUS * Math.cos(a) * Math.sin(i);
                 double z = HEAL_RADIUS * Math.sin(a) * Math.sin(i);
                 center.add(x, y, z);
@@ -83,12 +88,8 @@ public class MagicManager {
                 ItemStack item = strike.getItemStack();
                 stand.setItemInHand(item);                
                 ++i;
-                for (Entity e : inFront.getWorld().getNearbyEntities(inFront, 1.5, 2, 1.5)) {
-                    if (e != p) {
-                        ((Damageable)e).damage(2.5);
-                        e.setVelocity(e.getVelocity().add(inFront.getDirection().normalize().multiply(0.75)));
-                    }
-                }
+                
+                checkEntityRadius(p, inFront, 2.0, 2.0);
                 if (i > 6) {
                     stopTask(taskSlash1);
                     stand.remove();
@@ -98,9 +99,155 @@ public class MagicManager {
         }, 0, 1);
     }
     
+    int testStartTask = 0;
+    public void test (Player player) {
+        SPlayer sp = PlayerManager.get().getPlayer(player.getUniqueId());
+        
+        testStartTask = SCore.get().getServer().getScheduler().scheduleSyncRepeatingTask(SCore.get(), new Runnable() {
+            int tick = 1;
+            @Override
+            public void run() {
+                if (tick <= 4) {
+                    switch (tick) {
+                        case 1:
+                            test1(player);
+                        case 2:
+                            test2(player);
+                        case 3:
+                            test3(player);
+                        case 4:
+                            test4(player);
+                    }
+                } else {
+                    String progress = new Tools().getProgressBar(sp.getMana(), 20.0, 20.0, '|', ChatColor.YELLOW, ChatColor.GRAY);
+                    new Tools().sendActionBar(player, "&6&lMANÁ &7- &e"+progress);
+
+                    sp.setMana(sp.getMana()-0.50);                
+                    if (sp.getMana() <= 0.0) {
+                        stopTask(testStartTask);
+                        
+                        stopTask(heal1);
+                        stopTask(heal2);
+                        stopTask(heal3);
+                        stopTask(heal4);
+                        
+                        sp.setMana(20.0);
+                    }
+                    
+                    stopTask(testStartTask);
+                }
+                ++tick;
+            }
+        }, 0L, 13L);
+    }
+    
+    private int heal1 = 0;
+    private int heal2 = 0;
+    private int heal3 = 0;
+    private int heal4 = 0;
+    public void test1 (final Player player) {        
+        final float radius = 5.0f;
+        final float radPerSec = 5.0f;
+        final float radPerTick = radPerSec / 40f;
+        
+        final CustomEntity ce = CustomEntity.spawn("survivalrp:test", player.getLocation());
+                       
+        heal1 = SCore.get().getServer().getScheduler().scheduleSyncRepeatingTask(SCore.get(), new Runnable() {
+            int tick = 0;
+            @Override
+            public void run() {
+                ++tick;
+                Location loc1 = getLocationAroundCircle(player.getLocation(), radius, radPerTick*tick);
+                ce.teleport(loc1);
+                
+                double y = player.getLocation().getY();
+                for (double i = y; i < (y+5); ++i) {
+                    new Tools().playParticle(Particle.VILLAGER_HAPPY, loc1, 1, 0.01, 5.00, 0.01);
+                }                
+            }
+        }, 0L, 1L);
+    }
+    public void test2 (final Player player) {        
+        final float radius = 5.0f;
+        final float radPerSec = 5.0f;
+        final float radPerTick = radPerSec / 40f;
+        
+        final CustomEntity ce = CustomEntity.spawn("survivalrp:test", player.getLocation());
+                       
+        heal2 = SCore.get().getServer().getScheduler().scheduleSyncRepeatingTask(SCore.get(), new Runnable() {
+            int tick = 0;
+            @Override
+            public void run() {
+                ++tick;
+                Location loc1 = getLocationAroundCircle(player.getLocation(), radius, radPerTick*tick);
+                ce.teleport(loc1);
+                
+                double y = player.getLocation().getY();
+                for (double i = y; i < (y+5); ++i) {
+                    new Tools().playParticle(Particle.VILLAGER_HAPPY, loc1, 1, 0.01, 5.00, 0.01);
+                }                
+            }
+        }, 0L, 1L);
+    }
+    public void test3 (final Player player) {        
+        final float radius = 5.0f;
+        final float radPerSec = 5.0f;
+        final float radPerTick = radPerSec / 40f;
+        
+        final CustomEntity ce = CustomEntity.spawn("survivalrp:test", player.getLocation());
+                       
+        heal3 = SCore.get().getServer().getScheduler().scheduleSyncRepeatingTask(SCore.get(), new Runnable() {
+            int tick = 0;
+            @Override
+            public void run() {
+                ++tick;
+                Location loc1 = getLocationAroundCircle(player.getLocation(), radius, radPerTick*tick);
+                ce.teleport(loc1);
+                
+                double y = player.getLocation().getY();
+                for (double i = y; i < (y+5); ++i) {
+                    new Tools().playParticle(Particle.VILLAGER_HAPPY, loc1, 1, 0.01, 5.00, 0.01);
+                }                
+            }
+        }, 0L, 1L);
+    }
+    public void test4 (final Player player) {        
+        final float radius = 5.0f;
+        final float radPerSec = 5.0f;
+        final float radPerTick = radPerSec / 40f;
+        
+        final CustomEntity ce = CustomEntity.spawn("survivalrp:test", player.getLocation());
+                       
+        heal4 = SCore.get().getServer().getScheduler().scheduleSyncRepeatingTask(SCore.get(), new Runnable() {
+            int tick = 0;
+            @Override
+            public void run() {
+                ++tick;
+                Location loc1 = getLocationAroundCircle(player.getLocation(), radius, radPerTick*tick);
+                ce.teleport(loc1);
+                
+                double y = player.getLocation().getY();
+                for (double i = y; i < (y+5); ++i) {
+                    new Tools().playParticle(Particle.VILLAGER_HAPPY, loc1, 1, 0.01, 5.00, 0.01);
+                }                
+            }
+        }, 0L, 1L);
+    }
+    
     /*
     
     */
+    
+    public Location getLocationAroundCircle(Location center, double radius, double angleInRadian) {
+        double x = center.getX() + radius * Math.cos(angleInRadian);
+        double z = center.getZ() + radius * Math.sin(angleInRadian);
+        double y = center.getY();
+        
+        Location loc = new Location(center.getWorld(), x, y, z);
+        Vector difference = center.toVector().clone().subtract(loc.toVector());
+        loc.setDirection(difference);        
+        return loc;
+    }
     
     private final Vector rotateAroundAxisX(Vector v, double angle) {
         double cos = Math.cos(angle);
@@ -122,7 +269,7 @@ public class MagicManager {
         Bukkit.getScheduler().cancelTask(taskId);
     }
     
-    public void checkEntityRadius (Player p, Location loc, Double radius) {
+    public void checkEntityRadius (Player p, Location loc, Double radius, Double damage) {
         ArrayList<Entity> reg = new ArrayList<>();
         for (Entity entity : loc.getWorld().getNearbyEntities(loc, radius, radius, radius)) {
             if (entity instanceof LivingEntity) {
@@ -133,7 +280,7 @@ public class MagicManager {
                 Entity ent = entity;
                 if (!reg.contains(ent)) {
                     reg.add(ent);
-                    ((Damageable)ent).damage(2, p);
+                    ((Damageable)ent).damage(damage, p);
                     ent.setVelocity(entity.getVelocity().add(loc.getDirection().normalize().multiply(0.75)));
                 }
             }
