@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -19,7 +17,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import store.j3studios.plugin.SCore;
 import store.j3studios.plugin.player.PlayerManager;
@@ -98,6 +95,92 @@ public class MagicManager {
             }            
         }, 0, 1);
     }
+
+    /*
+    
+    */
+    
+    private int taskHealing = 0;
+    private boolean stopHealing = false;
+    public void healing(Player p) {
+        if (taskHealing != 0) {
+            return;
+        }
+        
+        healingSeconds(p);
+        
+        Vector direction = p.getLocation().getDirection().multiply(0.0).setY(0.0);
+        Location inFront = p.getLocation().add(direction);
+        ArmorStand stand = (ArmorStand)p.getWorld().spawnEntity(inFront, EntityType.ARMOR_STAND);
+        stand.setInvulnerable(true);
+        stand.setInvisible(true);
+        stand.setGravity(false);
+        
+        taskHealing = SCore.get().getServer().getScheduler().scheduleSyncRepeatingTask(SCore.get(), new Runnable() {
+            Integer i = 1;
+            @Override
+            public void run() {
+                if (!stopHealing) {
+                    if (i <= 9) {
+                        CustomStack strike = CustomStack.getInstance("survivalrp:healing_" + i);
+                        ItemStack item = strike.getItemStack();
+                        stand.getEquipment().setHelmet(item);
+                        ++i;                    
+                    } else {
+                        for (Player o : checkPlayerRadius(inFront, 3.5)) {
+                            SPlayer sp = PlayerManager.get().getPlayer(o.getUniqueId());
+                            sp.startHealing();                              
+                            if ((o.getHealth()+0.2) < 20.0) {
+                                Tools.get().playSound(o, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
+                                o.setHealth(p.getHealth()+0.5);
+                            } else {
+                                o.setHealth(20.0);
+                            }
+                        }
+                    }
+                } else {
+                    if (i > 1) {
+                        CustomStack strike = CustomStack.getInstance("survivalrp:healing_" + (i-1));
+                        ItemStack item = strike.getItemStack();
+                        stand.getEquipment().setHelmet(item);
+                        --i;                                          
+                    } else {
+                        stopTask(taskHealing);
+                        stand.remove();
+                        taskHealing = 0;
+                        stopHealing = false;
+                    }
+                }
+                
+            }            
+        }, 0, 1);
+    }
+    
+    private int taskHealingSeconds = 0;
+    public void healingSeconds(Player p) {
+        if (taskHealingSeconds != 0) {
+            return;
+        }                
+        taskHealingSeconds = SCore.get().getServer().getScheduler().scheduleSyncRepeatingTask(SCore.get(), new Runnable() {
+            double seconds = 20.0;
+            @Override
+            public void run() {
+                if (seconds > 0.0) {
+                    String progress = new Tools().getProgressBar(seconds, 20.0, 20.0, '|', ChatColor.YELLOW, ChatColor.GRAY);
+                    new Tools().sendActionBar(p, "&6&lHealing &7- &e"+progress);
+                    seconds -= 0.5;
+                } else {
+                    stopTask(taskHealingSeconds);
+                    stopHealing = true;
+                    taskHealingSeconds = 0;
+                }
+            }            
+        }, 0, 10);
+    }
+    
+    /*
+    
+    */
     
     int testStartTask = 0;
     public void test (Player player) {
@@ -108,33 +191,18 @@ public class MagicManager {
             @Override
             public void run() {
                 if (tick <= 4) {
-                    switch (tick) {
-                        case 1:
-                            test1(player);
-                        case 2:
-                            test2(player);
-                        case 3:
-                            test3(player);
-                        case 4:
-                            test4(player);
-                    }
+                    
                 } else {
                     String progress = new Tools().getProgressBar(sp.getMana(), 20.0, 20.0, '|', ChatColor.YELLOW, ChatColor.GRAY);
+                    
                     new Tools().sendActionBar(player, "&6&lMANÁ &7- &e"+progress);
-
                     sp.setMana(sp.getMana()-0.50);                
+                    
                     if (sp.getMana() <= 0.0) {
-                        stopTask(testStartTask);
-                        
-                        stopTask(heal1);
-                        stopTask(heal2);
-                        stopTask(heal3);
-                        stopTask(heal4);
-                        
+                        stopTask(testStartTask);                        
+                        stopTask(heal1);                      
                         sp.setMana(20.0);
                     }
-                    
-                    stopTask(testStartTask);
                 }
                 ++tick;
             }
@@ -142,9 +210,6 @@ public class MagicManager {
     }
     
     private int heal1 = 0;
-    private int heal2 = 0;
-    private int heal3 = 0;
-    private int heal4 = 0;
     public void test1 (final Player player) {        
         final float radius = 5.0f;
         final float radPerSec = 5.0f;
@@ -153,72 +218,6 @@ public class MagicManager {
         final CustomEntity ce = CustomEntity.spawn("survivalrp:test", player.getLocation());
                        
         heal1 = SCore.get().getServer().getScheduler().scheduleSyncRepeatingTask(SCore.get(), new Runnable() {
-            int tick = 0;
-            @Override
-            public void run() {
-                ++tick;
-                Location loc1 = getLocationAroundCircle(player.getLocation(), radius, radPerTick*tick);
-                ce.teleport(loc1);
-                
-                double y = player.getLocation().getY();
-                for (double i = y; i < (y+5); ++i) {
-                    new Tools().playParticle(Particle.VILLAGER_HAPPY, loc1, 1, 0.01, 5.00, 0.01);
-                }                
-            }
-        }, 0L, 1L);
-    }
-    public void test2 (final Player player) {        
-        final float radius = 5.0f;
-        final float radPerSec = 5.0f;
-        final float radPerTick = radPerSec / 40f;
-        
-        final CustomEntity ce = CustomEntity.spawn("survivalrp:test", player.getLocation());
-                       
-        heal2 = SCore.get().getServer().getScheduler().scheduleSyncRepeatingTask(SCore.get(), new Runnable() {
-            int tick = 0;
-            @Override
-            public void run() {
-                ++tick;
-                Location loc1 = getLocationAroundCircle(player.getLocation(), radius, radPerTick*tick);
-                ce.teleport(loc1);
-                
-                double y = player.getLocation().getY();
-                for (double i = y; i < (y+5); ++i) {
-                    new Tools().playParticle(Particle.VILLAGER_HAPPY, loc1, 1, 0.01, 5.00, 0.01);
-                }                
-            }
-        }, 0L, 1L);
-    }
-    public void test3 (final Player player) {        
-        final float radius = 5.0f;
-        final float radPerSec = 5.0f;
-        final float radPerTick = radPerSec / 40f;
-        
-        final CustomEntity ce = CustomEntity.spawn("survivalrp:test", player.getLocation());
-                       
-        heal3 = SCore.get().getServer().getScheduler().scheduleSyncRepeatingTask(SCore.get(), new Runnable() {
-            int tick = 0;
-            @Override
-            public void run() {
-                ++tick;
-                Location loc1 = getLocationAroundCircle(player.getLocation(), radius, radPerTick*tick);
-                ce.teleport(loc1);
-                
-                double y = player.getLocation().getY();
-                for (double i = y; i < (y+5); ++i) {
-                    new Tools().playParticle(Particle.VILLAGER_HAPPY, loc1, 1, 0.01, 5.00, 0.01);
-                }                
-            }
-        }, 0L, 1L);
-    }
-    public void test4 (final Player player) {        
-        final float radius = 5.0f;
-        final float radPerSec = 5.0f;
-        final float radPerTick = radPerSec / 40f;
-        
-        final CustomEntity ce = CustomEntity.spawn("survivalrp:test", player.getLocation());
-                       
-        heal4 = SCore.get().getServer().getScheduler().scheduleSyncRepeatingTask(SCore.get(), new Runnable() {
             int tick = 0;
             @Override
             public void run() {
@@ -286,4 +285,16 @@ public class MagicManager {
             }
         }
     }
+    
+    public ArrayList<Player> checkPlayerRadius (Location loc, Double radius) {
+        ArrayList<Player> reg = new ArrayList<>();
+        for (Entity entity : loc.getWorld().getNearbyEntities(loc, radius, radius, radius)) {
+            if (entity instanceof Player) {
+                Player player = (Player)entity;
+                reg.add(player);
+            }
+        }
+        return reg;
+    }
+    
 }

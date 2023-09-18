@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import store.j3studios.plugin.commands.essentials.FeedCMD;
+import store.j3studios.plugin.commands.essentials.FlyCMD;
 import store.j3studios.plugin.commands.essentials.GamemodeCMD;
 import store.j3studios.plugin.commands.essentials.HealCMD;
 import store.j3studios.plugin.commands.essentials.MessageCMD;
@@ -20,7 +21,6 @@ import store.j3studios.plugin.database.SQL;
 import store.j3studios.plugin.listeners.PlayerListener;
 import store.j3studios.plugin.managers.ScoreboardManager;
 import store.j3studios.plugin.player.PlayerManager;
-import store.j3studios.plugin.tasks.ProtectionsTask;
 import store.j3studios.plugin.utils.Config;
 import store.j3studios.plugin.utils.Tools;
 import store.j3studios.plugin.utils.socket.SocketServer;
@@ -49,6 +49,7 @@ public class SCore extends JavaPlugin {
         
         // ESSENTIALS COMMANDS
         this.registerCommand("gamemode", new GamemodeCMD());
+        this.registerCommand("fly", new FlyCMD());
         this.registerCommand("message", new MessageCMD());
         this.registerEvent(new MessageCMD());
         this.registerCommand("list", new OnlineCMD());
@@ -57,10 +58,7 @@ public class SCore extends JavaPlugin {
         
         SQL.get().openConnection();
         //this.socketStart(7777);
-         
-        // LOAD MANAGER
-        new ProtectionsTask(this).loadHours();
-        
+                 
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!PlayerManager.get().doesPlayerExists(p.getUniqueId())) {
                 PlayerManager.get().createPlayer(p);

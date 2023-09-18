@@ -60,7 +60,8 @@ public class PlayerListener implements Listener {
 
             if (item.getType() == Material.STICK) {
                 event.setCancelled(true);
-                MagicManager.get().healingEffect(player, 5.0);
+                //MagicManager.get().healingEffect(player, 5.0);
+                MagicManager.get().healing(player);
                 return;
             }
             
@@ -74,10 +75,6 @@ public class PlayerListener implements Listener {
                 //MagicManager.get().ceguera(player);
                 MagicManager.get().slash(player);
             }
-
-            /*if (!item.getItemMeta().getLore().contains("healing")) {
-                return;
-            }*/
             
         }
     }

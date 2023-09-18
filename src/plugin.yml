@@ -10,6 +10,8 @@ commands:
     testprote:
     gamemode:
         aliases: [gm]
+    fly:
+        aliases: [allowfly,volar,setfly]
     message:
         aliases: [msg,sendmsg,sendmessage,priv,dm]
     list:

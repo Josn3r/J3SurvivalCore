@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.UUID;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.josn3r.plugin.utils.ScoreboardUtil;
+import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import store.j3studios.plugin.SCore;
@@ -111,7 +113,7 @@ public class SPlayer {
     public void setGolds(Integer golds) {
         this.golds = golds;
     }
-    
+
     /*
     
     */
@@ -144,6 +146,12 @@ public class SPlayer {
             }	           
         }.runTaskTimerAsynchronously(SCore.get(), 0L, 20L);
         s.build(p);
+    }
+    
+    //
+    
+    public void startHealing() {
+        Tools.get().playParticle(Particle.VILLAGER_HAPPY, getPlayer(), 1, 1.0, 2.5, 1.0);
     }
     
 }
