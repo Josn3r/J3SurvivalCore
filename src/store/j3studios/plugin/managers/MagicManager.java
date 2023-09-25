@@ -216,7 +216,7 @@ public class MagicManager {
         final float radPerTick = radPerSec / 40f;
         
         final CustomEntity ce = CustomEntity.spawn("survivalrp:test", player.getLocation());
-                       
+        
         heal1 = SCore.get().getServer().getScheduler().scheduleSyncRepeatingTask(SCore.get(), new Runnable() {
             int tick = 0;
             @Override
@@ -224,19 +224,17 @@ public class MagicManager {
                 ++tick;
                 Location loc1 = getLocationAroundCircle(player.getLocation(), radius, radPerTick*tick);
                 ce.teleport(loc1);
-                
-                double y = player.getLocation().getY();
-                for (double i = y; i < (y+5); ++i) {
-                    new Tools().playParticle(Particle.VILLAGER_HAPPY, loc1, 1, 0.01, 5.00, 0.01);
-                }                
+                new Tools().playParticle(Particle.VILLAGER_HAPPY, loc1, 1, 0.01, 5.00, 0.01);                
             }
         }, 0L, 1L);
     }
     
+    
+    
     /*
     
     */
-    
+                                
     public Location getLocationAroundCircle(Location center, double radius, double angleInRadian) {
         double x = center.getX() + radius * Math.cos(angleInRadian);
         double z = center.getZ() + radius * Math.sin(angleInRadian);

@@ -1,11 +1,9 @@
 package store.j3studios.plugin.player;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.josn3r.plugin.utils.ScoreboardUtil;
-import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -15,22 +13,16 @@ import store.j3studios.plugin.utils.Tools;
 
 public class SPlayer {
     
-    private UUID uuid;
-    private Player player;
-     
-    private String job1 = null;
-    
-    // MARRY
-    private String marryUUID = null;
-    private String marryName = null;
-    private String marryDate = null;
-	
+    private final UUID uuid;
+    private final Player player;
+        	
     // ECONOMY
     private Integer silvers = 0;
     private Integer golds = 0;
     
-    // MANA
-    private Double mana = 20.0;
+    // HEALTH && MANA
+    private Double health = 120.0;
+    private Double mana = 100.0;
     
     public SPlayer (UUID uuid, Player player) {
         this.uuid = uuid;
@@ -47,8 +39,15 @@ public class SPlayer {
 
     /*
     
-    
     */
+
+    public Double getHealth() {
+        return health;
+    }
+
+    public void setHealth(Double health) {
+        this.health = health;
+    }
 
     public Double getMana() {
         return mana;
@@ -57,46 +56,10 @@ public class SPlayer {
     public void setMana(Double mana) {
         this.mana = mana;
     }
-    
-    
-    
+        
     /*
-    
-    
+        
     */
-    
-    
-    public String getJob1() {
-        return job1;
-    }
-
-    public void setJob1(String job1) {
-        this.job1 = job1;
-    }
-
-    public String getMarryUUID() {
-        return marryUUID;
-    }
-
-    public void setMarryUUID(String marryUUID) {
-        this.marryUUID = marryUUID;
-    }
-
-    public String getMarryName() {
-        return marryName;
-    }
-
-    public void setMarryName(String marryName) {
-        this.marryName = marryName;
-    }
-
-    public String getMarryDate() {
-        return marryDate;
-    }
-
-    public void setMarryDate(String marryDate) {
-        this.marryDate = marryDate;
-    }
 
     public Integer getSilvers() {
         return silvers;

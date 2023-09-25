@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -15,6 +16,7 @@ import store.j3studios.plugin.database.PlayerSQL;
 import store.j3studios.plugin.managers.MagicManager;
 import store.j3studios.plugin.managers.ScoreboardManager;
 import store.j3studios.plugin.player.PlayerManager;
+import store.j3studios.plugin.player.SPlayer;
 
 public class PlayerListener implements Listener {
     
@@ -48,6 +50,7 @@ public class PlayerListener implements Listener {
             MagicManager.get().slash(player);
         }        
     }
+    
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
@@ -76,6 +79,19 @@ public class PlayerListener implements Listener {
                 MagicManager.get().slash(player);
             }
             
+        }
+    }
+    
+    @EventHandler
+    public void onEntityDamageByEntity (EntityDamageByEntityEvent e) {
+        if (e.getEntity() instanceof Player p) {
+            SPlayer sp = PlayerManager.get().getPlayer(p.getUniqueId());
+            
+            e.setCancelled(true);
+            
+            p.damage(0);
+            p.setVelocity(e.getDamager().getVelocity().add(e.getDamager().getLocation().getDirection().normalize().multiply(0.75)));
+            sp.setHealth(sp.getHealth() - 1.5);
         }
     }
     
