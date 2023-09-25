@@ -12,6 +12,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import store.j3studios.plugin.SCore;
+import store.j3studios.plugin.player.PlayerManager;
+import store.j3studios.plugin.player.SPlayer;
 import store.j3studios.plugin.utils.Tools;
 
 public class MessageCMD implements TabExecutor, Listener {
@@ -27,8 +29,7 @@ public class MessageCMD implements TabExecutor, Listener {
         
         */
         
-        if (command.getName().equalsIgnoreCase("message")) {
-            
+        if (command.getName().equalsIgnoreCase("message")) {            
             if (!(sender instanceof Player)) {
                 if (args.length == 0) {
                     SCore.debug("&7Correct Usage: &e/message [player] [message]");
@@ -63,10 +64,18 @@ public class MessageCMD implements TabExecutor, Listener {
                     player.sendMessage(new Tools().Text("&cPlayer &e" + playerName + " &cnot is online!"));
                     return true;
                 }
+                SPlayer st = PlayerManager.get().getPlayer(target.getUniqueId());
                 
                 if (target == player) {
                     player.sendMessage(new Tools().Text("&cYou can't send a message to you!"));
                     return true;
+                }
+                
+                if (!st.isEnableMSG()) {
+                    if (!player.hasPermission("j3survivalcore.msg.bypass")) {
+                        player.sendMessage(new Tools().Text("&cEl jugador &f" + playerName + " &ctienes bloqueado los mensajes privados."));
+                        return true;
+                    }
                 }
                 
                 String message = new Tools().compileWords(args, 1);
@@ -77,7 +86,35 @@ public class MessageCMD implements TabExecutor, Listener {
                 new Tools().playSound(target, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
                 return true;
             }
+        }
+        
+        /*
+        COMMAND: /togglemsg
+        */
+        
+        if (command.getName().equalsIgnoreCase("togglemsg")) {
+            if (!(sender instanceof Player)) {
+                SCore.debug("&cEste comando solo está disponible para jugadores.");
+                return true;
+            }
             
+            Player p = (Player)sender;
+            SPlayer sp = PlayerManager.get().getPlayer(p.getUniqueId());
+            
+            if (!p.hasPermission("j3survivalcore.msg.toggle")) {
+                p.sendMessage(Tools.get().Text("&cNo tienes permiso para bloquear los mensajes privados."));
+                return true;
+            }
+            
+            if (sp.isEnableMSG()) {
+                sp.setEnableMSG(false);
+                p.sendMessage(Tools.get().Text("&6[MSG] &eAhora no recibirás mensajes privados."));
+            } else {
+                sp.setEnableMSG(true);
+                p.sendMessage(Tools.get().Text("&6[MSG] &eAhora no recibirás mensajes privados."));
+            }
+            
+            return true;
         }
         
         return true;

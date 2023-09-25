@@ -41,11 +41,16 @@ public class PlayerSQL {
             ResultSet rs = st1.getResultSet();
             if (!rs.next()) {
                 PreparedStatement st;
-                st = SQL.get().getConnection().prepareStatement("INSERT INTO `player_data` VALUES (?, ?, ?, ?)");
+                st = SQL.get().getConnection().prepareStatement("INSERT INTO `player_data` VALUES (?, ?, ?, ?, ?, ?)");
                 st.setInt(1, 0);
+                
                 st.setString(2, player.getUniqueId().toString());
                 st.setString(3, player.getName());      
-                st.setInt(4, 0);
+                
+                st.setInt(4, 1);
+                st.setInt(5, 0);
+                st.setInt(6, 0);
+                
                 st.executeUpdate();
                 st.close();
             } else {

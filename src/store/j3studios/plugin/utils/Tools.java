@@ -47,12 +47,12 @@ public class Tools {
     */
 	
     public String formatMoney (Integer balance) {
-        DecimalFormat format = new DecimalFormat("###,###,###,###,###.##");
+        DecimalFormat format = new DecimalFormat("###,###,###,###,###");
         return format.format(balance);
     }
 	
     public String formatMoney (Double balance) {
-        DecimalFormat format = new DecimalFormat("###,###,###,###,###.##");
+        DecimalFormat format = new DecimalFormat("###,###,###,###,###");
         return format.format(balance);
     }
     

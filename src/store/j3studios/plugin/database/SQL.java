@@ -20,11 +20,11 @@ public class SQL {
     
     private Connection con;
     
-    private String hostname = "localhost";
-    private Integer port = 3307;
-    private String username = "root";
-    private String password = "123456789";
-    private String database = "survivalrp";
+    private final String hostname = "localhost";
+    private final Integer port = 3307;
+    private final String username = "root";
+    private final String password = "123456789";
+    private final String database = "survivalrp";
     
     public Connection getConnection() {
         return con;
@@ -37,11 +37,7 @@ public class SQL {
             
             // CREATE TABLE
             this.createTable_PlayerData();
-            
-            // CREATE PROTECTIONS TABLES
-            this.createTable_ProtectionsData();
-            this.createTable_ProtectionsOwnerUserData();
-            this.createTable_ProtectionsMemberUserData();
+
         } catch (SQLException e) {
             SCore.debug("&cDatabase MySQL Failed during connecting! Please check your config...");
         }
@@ -72,61 +68,16 @@ public class SQL {
         try {
             Statement state = connect.createStatement();
             state.executeUpdate("CREATE TABLE IF NOT EXISTS `player_data` ("
+                    
                     + "`id` INT NOT NULL AUTO_INCREMENT,"
+                    
                     + "`uuid` VARCHAR(255),"
                     + "`nickname` VARCHAR(255),"
-                    + "`proteUserID` INT,"
-                    + "PRIMARY KEY (id))");
-            state.close();
-        } catch (SQLException e) {
-            
-        }
-    }
-    
-    // CREATE TABLE PROTECTION_DATA
-    public void createTable_ProtectionsData() {
-        Connection connect = SQL.get().getConnection();
-        try {
-            Statement state = connect.createStatement();
-            state.executeUpdate("CREATE TABLE IF NOT EXISTS `protections_data` ("
-                    + "`id` INT NOT NULL AUTO_INCREMENT,"
-                    + "`proteID` VARCHAR(255),"
-                    + "`userID` INT,"
-                    + "`members` VARCHAR(255),"
-                    + "`centerPoint` VARCHAR(255),"
-                    + "`radius` INT,"
-                    + "PRIMARY KEY (id))");
-            state.close();
-        } catch (SQLException e) {
-            
-        }
-    }
-    
-    // CREATE TABLE PROTECTION_OwnerUSER_DATA
-    public void createTable_ProtectionsOwnerUserData() {
-        Connection connect = SQL.get().getConnection();
-        try {
-            Statement state = connect.createStatement();
-            state.executeUpdate("CREATE TABLE IF NOT EXISTS `protections_ownerUser_data` ("
-                    + "`id` INT NOT NULL AUTO_INCREMENT,"
-                    + "`userID` INT,"
-                    + "`proteID` INT,"
-                    + "PRIMARY KEY (id))");
-            state.close();
-        } catch (SQLException e) {
-            
-        }
-    }
-    
-    // CREATE TABLE PROTECTION_MemberUSER_DATA
-    public void createTable_ProtectionsMemberUserData() {
-        Connection connect = SQL.get().getConnection();
-        try {
-            Statement state = connect.createStatement();
-            state.executeUpdate("CREATE TABLE IF NOT EXISTS `protections_memberUser_data` ("
-                    + "`id` INT NOT NULL AUTO_INCREMENT,"
-                    + "`userID` INT,"
-                    + "`proteID` INT,"
+                    
+                    + "`level` INT,"
+                    + "`exp` INT,"
+                    + "`totalExp` INT,"
+                    
                     + "PRIMARY KEY (id))");
             state.close();
         } catch (SQLException e) {

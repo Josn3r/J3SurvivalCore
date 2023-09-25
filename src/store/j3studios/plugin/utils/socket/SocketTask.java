@@ -87,10 +87,6 @@ public class SocketTask implements Runnable {
                 Thread.currentThread().interrupt();
                 break;
             }
-            /*try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-            }*/
         }
     };
 

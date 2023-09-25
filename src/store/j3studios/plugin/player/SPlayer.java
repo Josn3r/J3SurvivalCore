@@ -15,6 +15,11 @@ public class SPlayer {
     
     private final UUID uuid;
     private final Player player;
+    
+    // LEVEL && EXP
+    private Integer level = 1;
+    private Integer exp = 0;
+    private Integer totalExp = 0;
         	
     // ECONOMY
     private Integer silvers = 0;
@@ -23,6 +28,9 @@ public class SPlayer {
     // HEALTH && MANA
     private Double health = 120.0;
     private Double mana = 100.0;
+    
+    // OPTIONS - SETTINGS
+    private boolean enable_msg = false;
     
     public SPlayer (UUID uuid, Player player) {
         this.uuid = uuid;
@@ -36,6 +44,32 @@ public class SPlayer {
     public Player getPlayer() {
         return player;
     }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public Integer getExp() {
+        return exp;
+    }
+
+    public void setExp(Integer exp) {
+        this.exp = exp;
+    }
+
+    public Integer getTotalExp() {
+        return totalExp;
+    }
+
+    public void setTotalExp(Integer totalExp) {
+        this.totalExp = totalExp;
+    }
+    
+    
 
     /*
     
@@ -116,5 +150,19 @@ public class SPlayer {
     public void startHealing() {
         Tools.get().playParticle(Particle.VILLAGER_HAPPY, getPlayer(), 1, 1.0, 2.5, 1.0);
     }
+    
+    /*
+    
+    ALL SETTINGS SECTION
+    
+    */
+
+    public boolean isEnableMSG() {
+        return enable_msg;
+    }
+
+    public void setEnableMSG(boolean value) {
+        this.enable_msg = value;
+    }  
     
 }

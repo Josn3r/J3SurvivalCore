@@ -15,10 +15,14 @@ import store.j3studios.plugin.commands.essentials.GamemodeCMD;
 import store.j3studios.plugin.commands.essentials.HealCMD;
 import store.j3studios.plugin.commands.essentials.MessageCMD;
 import store.j3studios.plugin.commands.essentials.OnlineCMD;
+import store.j3studios.plugin.commands.essentials.economy.BalanceCMD;
+import store.j3studios.plugin.commands.essentials.economy.EconomyCMD;
+import store.j3studios.plugin.commands.essentials.economy.PayCMD;
 import store.j3studios.plugin.commands.testcmds;
 import store.j3studios.plugin.database.PlayerSQL;
 import store.j3studios.plugin.database.SQL;
 import store.j3studios.plugin.listeners.PlayerListener;
+import store.j3studios.plugin.managers.EconomyManager;
 import store.j3studios.plugin.managers.ScoreboardManager;
 import store.j3studios.plugin.player.PlayerManager;
 import store.j3studios.plugin.utils.Config;
@@ -31,6 +35,8 @@ public class SCore extends JavaPlugin {
     
     public static Config lang,board;
     private SocketServer server;
+    
+    private EconomyManager em;
      
     @Override
     public void onEnable() {
@@ -43,6 +49,9 @@ public class SCore extends JavaPlugin {
         lang = new Config(this, "lang");
         board = new Config(this, "scoreboard");
         
+        // LOAD MANAGERS
+        em = new EconomyManager(this);
+        
         this.registerEvent(new PlayerListener());
         
         this.registerCommand("testprote", new testcmds());
@@ -51,13 +60,17 @@ public class SCore extends JavaPlugin {
         this.registerCommand("gamemode", new GamemodeCMD());
         this.registerCommand("fly", new FlyCMD());
         this.registerCommand("message", new MessageCMD());
+        this.registerCommand("togglemsg", new MessageCMD());
         this.registerEvent(new MessageCMD());
         this.registerCommand("list", new OnlineCMD());
         this.registerCommand("heal", new HealCMD());
         this.registerCommand("feed", new FeedCMD());
+        this.registerCommand("balance", new BalanceCMD());
+        this.registerCommand("pay", new PayCMD());
+        this.registerCommand("economy", new EconomyCMD());
         
         SQL.get().openConnection();
-        //this.socketStart(7777);
+        this.socketStart(7777);
                  
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!PlayerManager.get().doesPlayerExists(p.getUniqueId())) {
@@ -82,6 +95,10 @@ public class SCore extends JavaPlugin {
     
     public static SCore get() {
         return ins;
+    }
+    
+    public EconomyManager getEM() {
+        return em;
     }
     
     /*

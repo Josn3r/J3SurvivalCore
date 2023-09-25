@@ -1,5 +1,5 @@
 name: J3SurvivalCore
-version: 1.13.09.23
+version: 1.25.09.23
 main: store.j3studios.plugin.SCore
 author: J3Studios
 depends: [ItemsAdder,ProtocolLib,LoneLibs]
@@ -14,12 +14,20 @@ commands:
         aliases: [allowfly,volar,setfly]
     message:
         aliases: [msg,sendmsg,sendmessage,priv,dm]
+    togglemsg:
+        aliases: [enablemsg,toggledm,toggledms,togglepriv,togglepm,togglemp]
     list:
         aliases: [conectados,online]
     feed:
         aliases: [comida,food]
     heal:
         aliases: [vida,regenvida,regenhealth]
+    balance:
+        aliases: [bal,money,wallet]
+    pay:
+        aliases: [pagar,payment]
+    economy:
+        aliases: [eco,economia,econ]
     
     
     
